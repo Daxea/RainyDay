@@ -1,0 +1,171 @@
+program = IMPORTS (MODULE) TYPE-DEF* | STATEMENT*
+
+module = "module" ID SEMI
+
+imports = ("use" ID (ACCESSOR ID)* SEMI)*
+
+type-def = "type" ID (GENERIC-DECL) (COLON TYPE-NAME (COMMA TYPE-NAME)*) TYPE-BODY
+
+type-name = ID (ACCESSOR ID)* GENERIC (ARRAY-START ARRAY-END)
+
+generic-decl = GENERIC-START ID GENERIC-END
+
+generic = (GENERIC-START TYPE-NAME GENERIC-END)
+
+type-body = BLOCK-START ((VISIBILITY COLON) VARIABLE-DECL*)* ((VISIBILITY COLON) FUNCTION*)* BLOCK-END
+
+function = CTOR BLOCK |
+           CTOR LAMBDA-BODY |
+           FUNCTION-HEAD BLOCK |
+           FUNCTION-HEAD LAMBDA-BODY
+
+function-head = TYPE-NAME ID PARAMETERS
+
+ctor = "new" ID PARAMETERS
+
+ctor-invocation = "new" TYPE-NAME PARAMETERS
+
+parameters = PARAM-START (TYPE ID (COMMA TYPE ID)*)* PARAM-END
+
+property = TYPE-NAME ID BLOCK-START ("get" LAMBDA-BODY) ("set" LAMBDA-BODY) BLOCK-END
+
+lambda-body = BLOCK SEMI | STATEMENT SEMI
+
+variable-decl = ("const") TYPE-NAME ID (ASSIGN LITERAL-OR-CONSANT) SEMI
+
+block = BLOCK-START (STATEMENT)* BLOCK-END
+
+statement = EXPRESSION SEMI |
+            VARIABLE ASSIGN (VARIABLE ASSIGN)* EXPRESSION SEMI |
+            VARIABLE-DECL ASSIGN (VARIABLE ASSIGN)* EXPRESSION SEMI |
+            RETURN EXPRESSION SEMI |
+            BRANCH
+
+branch = "if" PARAM-START EXPRESSION PARAM-END BLOCK ("else" BRANCH)*
+
+foreach = "for" PARAM-START ID "in" VARIABLE PARAM-END BLOCK |
+          "for" PARAM-START ID "in" VARIABLE PARAM-END STATEMENT SEMI
+
+// Execute the VARIABLE-DECL before looping, execute the first EXPRESSION before each loop, execute the final EXPRESSION after each loop.
+for-loop = "for" PARAM-START VARIABLE-DECL EXPRESSION SEMI EXPRESSION PARAM-END BLOCK |
+           "for" PARAM-START VARIABLE-DECL EXPRESSION SEMI EXPRESSION PARAM-END STATEMENT SEMI
+
+expression = VARIABLE ASSIGN (VARIABLE ASSIGN)* EXPRESSION |
+             CREATE-LOCAL-VAR |
+             BINARY-OP |
+             PRE-INCREMENT EXPRESSION |
+             EXPRESSION POST-INCREMENT |
+             CTOR-INVOCATION |
+             INVOCATION |
+             LAMBDA |
+             FACTOR
+
+factor = VARIABLE |
+         LITERAL-OR-CONSTANT
+
+create-local-var = "var" ID ASSIGN (VARIABLE ASSIGN)* EXPRESSION |
+                    TYPE-NAME ID ASSIGN (VARIABLE ASSIGN)* EXPRESSION |
+                    TYPE-NAME ID
+
+binary-op = EXPRESSION OP EXPRESSION
+
+literal-or-constant = LITERAL | CONSTANT
+
+invocation = (ID ACCESSOR)* ID PARAM-START (VARIABLE (COMMA VARIABLE)*) PARAM-END
+
+accessor = "."
+
+variable = ID (ARRAY-START LITERAL-OR-CONSTANT ARRAY-END)
+
+literal = NUMBER | CHAR | STRING | BOOLEAN
+
+char = CHAR-START CHARACTER CHAR-END
+string = INTERPOLATE STRING-START (CHARACTER)* (BLOCK-START EXPRESSION BLOCK-END)* (CHARACTER)* STRING-END |
+		 STRING-START (CHARACTER)* STRING-END
+boolean = true | false
+
+character = any single character or a backslash followed by any single character
+
+
+//===========// Example 1 //===========//
+// HelloWorld.rday                     //
+//=====================================//
+console.write("Hello World");
+
+//===========// Example 2 //===========//
+// calculator.rday                     //
+//=====================================//
+module core;
+
+type math
+{
+    public:
+        int Add(int a, int b)
+        {
+            return a + b;
+        }
+    
+        int Abs(int a)
+        {
+            if (a > 0)
+                return a;
+            return -a;
+        }
+}
+
+//===========// Example 3 //===========//
+// Task Management.rday                //
+//=====================================//
+use core;
+use core.math;
+
+module taskManager;
+
+type task
+{
+    public:
+        string _description;
+        int _priority = 0;
+    
+    private:
+        bool _isComplete = false;
+    
+    public:
+        new task(string description)
+        {
+            _description = description;
+        }
+
+        new task(string description, int priority)
+        {
+            _description = description;
+            _priority = priority;
+        }
+
+        bool isComplete
+        {
+            get => _isComplete
+            set {
+				if (_isComplete == value)
+					return;
+				_isComplete = value;
+				if (_isComplete)
+					console.write("Task");
+			}
+        }
+}
+
+type taskList : collections.list<task>
+{
+    public:
+        task[] getAllCompleted()
+        {
+            var completedTasks = new collections.list<task>();
+            for (var i = 0; i < count; i++)
+            {
+                if (items[i].isComplete)
+                    completedTasks.add(items[i]);
+            }
+            return completedTasks.toArray();
+        }
+}

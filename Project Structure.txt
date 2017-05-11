@@ -1,0 +1,5 @@
+RainyDay is comprised of three primary projects:
+
+RainyDay					| Handles tokenization of scripts or input, and parsing those tokens into an Abstract Syntax Tree.
+RainyDay.Compiler			| Handles building RainyDay projects into compiled programs, probably by transpiling to (and then compiling) C#.
+RainyDay.Interpreter		| Handles runtime interpretation of RainyDay AST script or input data.
