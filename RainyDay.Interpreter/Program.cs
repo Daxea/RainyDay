@@ -19,11 +19,12 @@ namespace RainyDay.Interpreter
 				var isSymbolMode = input.Contains("-s");
 				if (input.ToLowerInvariant().StartsWith("run"))
 				{
-					var lineArgs = input.Split(' ');
+					var lineArgs = input.Split('-');
 					var path = lineArgs[lineArgs.Length - 1];
 					if (!path.Contains(":"))
 						path = $@"C:\RainyDay\{path}";
-					input = File.ReadAllText(path);
+
+                    input = File.ReadAllText(path);
 
 					var lexer = new Lexer(input);
 					var parser = new Parser(lexer);

@@ -14,6 +14,10 @@ namespace RainyDay.Ast
 		{
 			Name = name;
 		}
+
+        public bool IsInferred => string.IsNullOrEmpty(Name);
+
+        public static TypeNode Inferred => new TypeNode(string.Empty);
 	}
 
 	public class BlockNode : AstNode

@@ -163,6 +163,7 @@ namespace RainyDay
 
             var type = TypeSpec();
             parameters.Add(new ParameterNode(_currentToken.Value.ToString(), type));
+            Eat(Tokens.Identifier);
 
             while (_currentToken.Type == Tokens.Comma)
             {
@@ -268,21 +269,32 @@ namespace RainyDay
         private AstNode Statement()
         {
             // STATEMENT = BLOCK |
-            //             VARAIBLE-DECL |
-            //             ASSIGNMENT |
+            //             var VARIABLE-DECL | // implicit variable declaration
+            //             IDENITIFER VARIABLE - DECL | // explicit variable declaration with user-defined type
+            //             TYPE - SPEC VARAIBLE - DECL | // explicit variable declaration with primitive type
+            //             IDENTIFIER ASSIGNMENT |
             //             RETURN EXPRESSION |
             //             BRANCH |
-            //             NO-OP
+            //             NO - OP
 
             if (_currentToken.Type == Tokens.BlockStart)
                 return Block();
             else if (_currentToken.Type == Tokens.Variable)
             {
                 Eat(_currentToken.Type);
-                return VariableDeclaration();
+                return VariableDeclaration(TypeNode.Inferred);
             }
             else if (_currentToken.Type == Tokens.Identifier)
-                return Assignment();
+            {
+                var id = _currentToken.Value.ToString();
+                Eat(Tokens.Identifier);
+                if (_currentToken.Type == Tokens.Assign)
+                    return Assignment();
+                else if (_currentToken.Type == Tokens.Identifier)
+                    return VariableDeclaration(new TypeNode(id));
+            }
+            else if (Tokens.IsPrimitiveType(_currentToken.Type))
+                return VariableDeclaration(TypeSpec());
             else if (_currentToken.Type == Tokens.Return)
             {
                 Eat(Tokens.Return);
@@ -295,6 +307,7 @@ namespace RainyDay
             }
             else
                 return new NoOpNode();
+            throw new Exception("bad statement");
         }
 
         private AstNode Assignment()
@@ -418,27 +431,32 @@ namespace RainyDay
             throw new Exception($"Parse Error: Failed to parse number from token {token}");
         }
 
-        private VariableDeclarationNode VariableDeclaration()
+        private VariableDeclarationNode VariableDeclaration(TypeNode type)
         {
-            // VARIABLE-DECL = VARIABLE (COMMA VARIABLE)* COLON TYPE-SPEC (ASSIGN EXPRESSION)
+            // VARIABLE-DECL = VARIABLES (ASSIGN EXPRESSION)
+
+            var variables = Variables();
+            if (type.IsInferred && _currentToken.Type != Tokens.Assign)
+                throw new Exception("Implicit types must be assigned to when declared!");
+            if (_currentToken.Type == Tokens.Assign)
+            {
+                Eat(Tokens.Assign);
+                return new VariableDeclarationNode(variables.ToArray(), type, Expression());
+            }
+            return new VariableDeclarationNode(variables.ToArray(), type);
+        }
+
+        private List<VariableNode> Variables()
+        {
+            // VARIABLES = VARIABLE (COMMA VARIABLE)*
 
             var variables = new List<VariableNode> { Variable() };
-
             while (_currentToken.Type == Tokens.Comma)
             {
                 Eat(Tokens.Comma);
                 variables.Add(Variable());
             }
-
-            Eat(Tokens.Colon);
-            var typeNode = TypeSpec();
-
-            if (_currentToken.Type == Tokens.Assign)
-            {
-                Eat(Tokens.Assign);
-                return new VariableDeclarationNode(variables.ToArray(), typeNode, Expression());
-            }
-            return new VariableDeclarationNode(variables.ToArray(), typeNode);
+            return variables;
         }
 
         private VariableNode Variable()

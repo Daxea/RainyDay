@@ -94,12 +94,14 @@ namespace RainyDay
         public const string Single = "Single";
 
 		private static string[] _NumberTypes = new [] { Int32, Single };
-
 		public static bool IsNumberType(string tokenType) => _NumberTypes.Contains(tokenType);
 
         public const string String = "String";
         public const string Character = "Character";
         public const string Boolean = "Boolean";
+
+        private static string[] _PrimitiveTypes = new[] { Int32, Single, String, Character, Boolean };
+        public static bool IsPrimitiveType(string tokenType) => _PrimitiveTypes.Contains(tokenType);
 
         #endregion
         #region Blocks/Groups
