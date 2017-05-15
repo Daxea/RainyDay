@@ -101,7 +101,7 @@ namespace RainyDay
         private Token Identifier()
         {
             var result = string.Empty;
-            while (_currentChar != char.MinValue && char.IsLetterOrDigit(_currentChar))
+            while (_currentChar != char.MinValue && (char.IsLetterOrDigit(_currentChar) || _currentChar == '_'))
             {
                 result += _currentChar;
                 AdvancePosition();
@@ -173,7 +173,7 @@ namespace RainyDay
                 if (char.IsDigit(_currentChar))
                     return Number();
 
-                if (char.IsLetter(_currentChar))
+                if (char.IsLetter(_currentChar) || _currentChar == '_')
                     return Identifier();
 
                 if (_currentChar == '"')
