@@ -26,10 +26,13 @@ namespace RainyDay
 		public const string Variable = "Variable";
 		public const string Identifier = "Identifier";
 		public const string Branch = "Branch";
+        public const string Else = "Else";
 		public const string LoopWhile = "While";
 		public const string LoopDo = "Do";
 		public const string LoopFor = "For";
 		public const string LoopForEach = "ForEach";
+        public const string True = "True";
+        public const string False = "False";
 
 		#endregion
 		#region Comparisons
@@ -96,6 +99,7 @@ namespace RainyDay
 
         public const string String = "String";
         public const string Character = "Character";
+        public const string Boolean = "Boolean";
 
         #endregion
         #region Blocks/Groups
@@ -112,20 +116,24 @@ namespace RainyDay
 		#endregion
 
 		private static Dictionary<string, Token> _reserved = new Dictionary<string, Token> {
-			{ "type", new Token(Type) },
-			{ "func", new Token(Function) },
-			{ "prop", new Token(Property) },
-			{ "get", new Token(PropertyGetter) },
-			{ "set", new Token(PropertySetter) },
+            { "type", new Token(Type) },
+            { "func", new Token(Function) },
+            { "prop", new Token(Property) },
+            { "get", new Token(PropertyGetter) },
+            { "set", new Token(PropertySetter) },
             { "var", new Token(Variable) },
-			{ "void", new Token(Void) },
+            { "void", new Token(Void) },
             { "int", new Token(Int32) },
             { "float", new Token(Single) },
             { "string", new Token(String) },
             { "char", new Token(Character) },
+            { "bool", new Token(Boolean) },
+            { "true", new Token(True) },
+            { "false", new Token(False) },
             { "module", new Token(Module) },
             { "use", new Token(Using) },
             { "if", new Token(Branch) },
+            { "else", new Token(Else) },
             { "while", new Token(LoopWhile) },
             { "do", new Token(LoopDo) },
             { "for", new Token(LoopFor) },

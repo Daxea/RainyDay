@@ -135,7 +135,21 @@ namespace RainyDay.Ast
 		}
 	}
 
-	public class LambdaNode : BlockNode { }
+	public class LambdaNode : BlockNode
+    {
+        public LambdaNode(params AstNode[] children)
+            : base(children) { }
+    }
+
+    public class ReturnNode : AstNode
+    {
+        public AstNode Expression { get; }
+
+        public ReturnNode(AstNode expression)
+        {
+            Expression = expression;
+        }
+    }
 
 	public class ImportNode : AstNode
 	{
@@ -182,35 +196,23 @@ namespace RainyDay.Ast
 		}
 	}
 
-	public abstract class DataNode<T> : AstNode
-	{
-		public T Value { get; }
+    public class BranchNode : AstNode
+    {
+        public AstNode Condition { get; }
+        /// <summary>
+        /// Gets the node to be executed if the Condition evaluates to true.
+        /// </summary>
+        public AstNode IfTrue { get; }
+        /// <summary>
+        /// Gets the node to be executed if the Condition evaluates to false.
+        /// </summary>
+        public AstNode IfFalse { get; }
 
-		public DataNode(T value)
-		{
-			Value = value;
-		}
-
-		public override string ToString() => Value.ToString();
-	}
-
-	public class IntegerNode : DataNode<int>
-	{
-		public IntegerNode(int value) : base(value) { }
-	}
-
-	public class SingleNode : DataNode<float>
-	{
-		public SingleNode(float value) : base(value) { }
-	}
-
-	public class StringNode : DataNode<string>
-	{
-		public StringNode(string value) : base(value) { }
-	}
-
-	public class CharacterNode : DataNode<char>
-	{
-		public CharacterNode(char value) : base(value) { }
-	}
+        public BranchNode(AstNode condition, AstNode ifTrue, AstNode ifFalse)
+        {
+            Condition = condition;
+            IfTrue = ifTrue;
+            IfFalse = ifFalse;
+        }
+    }
 }

@@ -51,6 +51,7 @@
     <Compile Include="AstNodeVisitor.cs" />
     <Compile Include="Ast\AstNode.cs" />
     <Compile Include="Ast\BinaryOperationNodes.cs" />
+    <Compile Include="Ast\DataNodes.cs" />
     <Compile Include="Ast\DeclarationNodes.cs" />
     <Compile Include="Ast\DecrementNodes.cs" />
     <Compile Include="Ast\IncrementNodes.cs" />

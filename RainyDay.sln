@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainyDay", "RainyDay\RainyDay.csproj", "{540A9922-677F-4601-8438-6F64D9BA1B58}"
 EndProject
@@ -11,7 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainyDay.Compiler", "RainyD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{3B4EBF42-7216-4574-AE21-A409629CB9FB}"
 	ProjectSection(SolutionItems) = preProject
-		Grammar.txt = Grammar.txt
+		Grammar-Obsolete.txt = Grammar-Obsolete.txt
+		Grammer.txt = Grammer.txt
 		Project Structure.txt = Project Structure.txt
 	EndProjectSection
 EndProject
@@ -20,6 +21,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System", "System", "{D7F778E8-29E1-48FE-BD92-F5DB11571143}"
 	ProjectSection(SolutionItems) = preProject
 		System.Math.rday = System.Math.rday
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GrammarTests", "GrammarTests", "{FA5D4687-B750-4CD5-B7BC-53580A5A315E}"
+	ProjectSection(SolutionItems) = preProject
+		Animals.rday = Animals.rday
 	EndProjectSection
 EndProject
 Global
@@ -46,5 +52,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D7F778E8-29E1-48FE-BD92-F5DB11571143} = {7ACF48D4-6074-4C05-A12C-38B10DB68132}
+		{FA5D4687-B750-4CD5-B7BC-53580A5A315E} = {7ACF48D4-6074-4C05-A12C-38B10DB68132}
 	EndGlobalSection
 EndGlobal
