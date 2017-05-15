@@ -106,7 +106,7 @@ namespace RainyDay
                 result += _currentChar;
                 AdvancePosition();
             }
-            var key = result.ToUpperInvariant();
+            var key = result.ToLowerInvariant();
             if (Tokens.Reserved.ContainsKey(key))
                 return Tokens.Reserved[key];
             return new Token(Tokens.Identifier, result);
@@ -134,17 +134,13 @@ namespace RainyDay
         private Token Character()
         {
             var result = _currentChar;
-            if (_currentChar == '\\')
-            {
-                result += _currentChar;
-                AdvancePosition();
-            }
             AdvancePosition();
             if (_currentChar != '\'')
             {
                 ReportError(new Exception("Single quotes can only contain a single character or escape sequence!"));
                 return null;
             }
+			AdvancePosition();
             return new Token(Tokens.Character, result);
         }
 
@@ -212,6 +208,12 @@ namespace RainyDay
                         AdvancePosition();
                         return GetToken(Tokens.Equal);
                     }
+
+					if (Peek() == '>')
+					{
+						AdvancePosition();
+						return GetToken(Tokens.Lambda);
+					}
 
                     return GetToken(Tokens.Assign);
                 }
@@ -304,6 +306,8 @@ namespace RainyDay
 
                     return GetToken(Tokens.Divide);
                 }
+
+				if (_currentChar == '.') return GetToken(Tokens.Dot);
 
                 ReportError(new Exception($"Tokenization failed at character '{_currentChar}'"));
                 return null;

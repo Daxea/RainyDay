@@ -22,5 +22,12 @@ namespace RainyDay
             Type = type;
             Value = value;
         }
-    }
+
+		public override string ToString()
+		{
+			if (Value == null)
+				return Type;
+			return $"{Type}: {Value}";
+		}
+	}
 }
