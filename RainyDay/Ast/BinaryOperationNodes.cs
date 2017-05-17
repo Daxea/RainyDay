@@ -31,4 +31,9 @@
 	{
 		public MultiplyNode(AstNode left, AstNode right) : base(left, right) { }
 	}
+
+    public class DivideNode : BinaryOperationNode
+    {
+        public DivideNode(AstNode left, AstNode right) : base(left, right) { }
+    }
 }

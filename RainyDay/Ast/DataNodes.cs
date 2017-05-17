@@ -10,6 +10,11 @@
         }
 
         public override string ToString() => Value.ToString();
+
+        public static implicit operator T(DataNode<T> node)
+        {
+            return node.Value;
+        }
     }
 
     public class IntegerNode : DataNode<int>

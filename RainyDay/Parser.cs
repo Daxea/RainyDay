@@ -289,7 +289,7 @@ namespace RainyDay
                 var id = _currentToken.Value.ToString();
                 Eat(Tokens.Identifier);
                 if (_currentToken.Type == Tokens.Assign)
-                    return Assignment();
+                    return Assignment(new VariableNode(id));
                 else if (_currentToken.Type == Tokens.Identifier)
                     return VariableDeclaration(new TypeNode(id));
             }
@@ -310,14 +310,11 @@ namespace RainyDay
             throw new Exception("bad statement");
         }
 
-        private AstNode Assignment()
+        private AssignNode Assignment(VariableNode variable)
         {
-            // ASSIGNMENT = VARIABLE ASSIGN EXPRESSION
-
-            var left = Variable();
             Eat(Tokens.Assign);
             var right = Expression();
-            return new AssignNode(left, right);
+            return new AssignNode(variable, right);
         }
 
         private AstNode Expression()
@@ -334,6 +331,8 @@ namespace RainyDay
                 Eat(token.Type);
                 if (token.Type == Tokens.Add)
                     node = new AddNode(node, Term());
+                else if (token.Type == Tokens.Subtract)
+                    node = new SubtractNode(node, Term());
             }
 
             return node;
@@ -378,6 +377,8 @@ namespace RainyDay
                 Eat(token.Type);
                 if (token.Type == Tokens.Multiply)
                     node = new MultiplyNode(node, Factor());
+                else if (token.Type == Tokens.Divide)
+                    node = new DivideNode(node, Factor());
             }
 
             return node;
@@ -386,8 +387,8 @@ namespace RainyDay
         private AstNode Factor()
         {
             // FACTOR = UNARY-OP FACTOR |
-            //          INCREMENT-BY-ONE FACTOR |
-            //          DECREMENT-BY-ONE FACTOR |
+            //          INCREMENT-BY-ONE VARIABLE |
+            //          DECREMENT-BY-ONE VARIABLE |
             //          NUMBER (INCREMENT-BY-ONE) |
             //          NUMBER (DECREMENT-BY-ONE) |
             //          STRING | CHAR | BOOLEAN |
@@ -396,16 +397,9 @@ namespace RainyDay
 
             var token = _currentToken;
             if (Tokens.IsUnaryOperator(token.Type)) { Eat(token.Type); return new UnaryOperationNode(token, Factor()); }
-            else if (token.Type == Tokens.IncrementByOne) { Eat(token.Type); return new PreIncrementNode(Factor()); }
-            else if (token.Type == Tokens.DecrementByOne) { Eat(token.Type); return new PreDecrementNode(Factor()); }
-            else if (Tokens.IsNumberType(token.Type))
-            {
-                var number = Number();
-                token = _currentToken;
-                if (token.Type == Tokens.IncrementByOne) { Eat(token.Type); return new PostIncrementNode(number); }
-                else if (token.Type == Tokens.DecrementByOne) { Eat(token.Type); return new PostDecrementNode(number); }
-                return number;
-            }
+            else if (token.Type == Tokens.IncrementByOne) { Eat(token.Type); return new PreIncrementNode(Variable()); }
+            else if (token.Type == Tokens.DecrementByOne) { Eat(token.Type); return new PreDecrementNode(Variable()); }
+            else if (Tokens.IsNumberType(token.Type)) return Number();
             else if (token.Type == Tokens.String) { Eat(token.Type); return new StringNode((string)token.Value); }
             else if (token.Type == Tokens.Character) { Eat(token.Type); return new CharacterNode((char)token.Value); }
             else if (token.Type == Tokens.True) { Eat(token.Type); return new BooleanNode(true); }
@@ -417,7 +411,14 @@ namespace RainyDay
                 Eat(Tokens.ParamEnd);
                 return expression;
             }
-            else return Variable();
+            else
+            {
+                var variable = Variable();
+                if (token.Type == Tokens.IncrementByOne) { Eat(token.Type); return new PostIncrementNode(variable); }
+                else if (token.Type == Tokens.DecrementByOne) { Eat(token.Type); return new PostDecrementNode(variable); }
+                return variable;
+
+            }
             throw new Exception("Factor bad. Very bad. No like it. Stop.");
         }
 

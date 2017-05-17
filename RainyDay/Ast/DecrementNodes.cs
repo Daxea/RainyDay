@@ -2,21 +2,21 @@
 {
 	public class PreDecrementNode : AstNode
 	{
-		public AstNode Expression { get; }
+		public VariableNode Variable { get; }
 
-		public PreDecrementNode(AstNode expression)
+		public PreDecrementNode(VariableNode variable)
 		{
-			Expression = expression;
+			Variable = variable;
 		}
 	}
 
 	public class PostDecrementNode : AstNode
 	{
-		public AstNode Expression { get; }
+		public VariableNode Variable { get; }
 
-		public PostDecrementNode(AstNode expression)
+		public PostDecrementNode(VariableNode variable)
 		{
-			Expression = expression;
+			Variable = variable;
 		}
 	}
 }

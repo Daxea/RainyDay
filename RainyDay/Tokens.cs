@@ -77,11 +77,9 @@ namespace RainyDay
 
 		public static bool IsIncrementOrDecrementOperator(string tokenType) => _IncrementOrDecrementOperators.Contains(tokenType);
 
-		public const string UnaryIncrement = "UnaryIncrement";
-		public const string UnaryDecrement = "UnaryDecrement";
 		public const string Not = "Not";
 
-		private static string[] _UnaryOperators = new[] { UnaryIncrement, UnaryDecrement, Not };
+		private static string[] _UnaryOperators = new[] { Add, Subtract, Not };
 
 		public static bool IsUnaryOperator(string tokenType) => _UnaryOperators.Contains(tokenType);
 

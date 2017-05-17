@@ -2,21 +2,21 @@
 {
 	public class PreIncrementNode : AstNode
 	{
-		public AstNode Expression { get; }
+		public VariableNode Variable { get; }
 
-		public PreIncrementNode(AstNode expression)
+		public PreIncrementNode(VariableNode variable)
 		{
-			Expression = expression;
+			Variable = variable;
 		}
 	}
 
 	public class PostIncrementNode : AstNode
 	{
-		public AstNode Expression { get; }
+		public VariableNode Variable { get; }
 
-		public PostIncrementNode(AstNode expression)
+		public PostIncrementNode(VariableNode variable)
 		{
-			Expression = expression;
+			Variable = variable;
 		}
 	}
 }

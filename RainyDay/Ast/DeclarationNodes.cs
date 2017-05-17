@@ -6,20 +6,20 @@
 	{
 		public VariableNode[] Variables { get; }
 		public TypeNode Type { get; }
-		public object Value { get; }
+		public AstNode Expression { get; }
 
 		public VariableDeclarationNode(VariableNode[] variables, TypeNode type)
 		{
 			Variables = variables;
 			Type = type;
-			Value = null;
+			Expression = new NoOpNode();
 		}
 
-		public VariableDeclarationNode(VariableNode[] variables, TypeNode type, object value)
+		public VariableDeclarationNode(VariableNode[] variables, TypeNode type, AstNode value)
 		{
 			Variables = variables;
 			Type = type;
-			Value = value;
+			Expression = value;
 		}
 	}
 

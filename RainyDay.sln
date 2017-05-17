@@ -26,6 +26,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GrammarTests", "GrammarTests", "{FA5D4687-B750-4CD5-B7BC-53580A5A315E}"
 	ProjectSection(SolutionItems) = preProject
 		Animals.rday = Animals.rday
+		TaskList.rday = TaskList.rday
 	EndProjectSection
 EndProject
 Global

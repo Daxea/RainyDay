@@ -32,5 +32,7 @@ namespace RainyDay
 		}
 
 		protected void ReportError(Exception error) => _errors.Add(error);
+
+        public void ClearErrors() => _errors.Clear();
 	}
 }
