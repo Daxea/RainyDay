@@ -148,10 +148,46 @@ namespace RainyDay.Interpreter
 
         }
 
-        #endregion
-        #region Binary Operations
+		private void Visit(IncrementByNode node)
+		{
+			var variable = (node.Left as VariableNode);
+			dynamic value = Visit(node.Right);
+			dynamic originalValue = GlobalVariables[variable.Name].Value;
+			if (originalValue.GetType() == value.GetType())
+				GlobalVariables[variable.Name].Value = originalValue + value;
+		}
 
-        private object Visit(AddNode node)
+		private void Visit(DecrementByNode node)
+		{
+			var variable = (node.Left as VariableNode);
+			dynamic value = Visit(node.Right);
+			dynamic originalValue = GlobalVariables[variable.Name].Value;
+			if (originalValue.GetType() == value.GetType())
+				GlobalVariables[variable.Name].Value = originalValue - value;
+		}
+
+		private void Visit(MultiplyByNode node)
+		{
+			var variable = (node.Left as VariableNode);
+			dynamic value = Visit(node.Right);
+			dynamic originalValue = GlobalVariables[variable.Name].Value;
+			if (originalValue.GetType() == value.GetType())
+				GlobalVariables[variable.Name].Value = originalValue * value;
+		}
+
+		private void Visit(DivideByNode node)
+		{
+			var variable = (node.Left as VariableNode);
+			dynamic value = Visit(node.Right);
+			dynamic originalValue = GlobalVariables[variable.Name].Value;
+			if (originalValue.GetType() == value.GetType())
+				GlobalVariables[variable.Name].Value = originalValue / value;
+		}
+
+		#endregion
+		#region Binary Operations
+
+		private object Visit(AddNode node)
         {
             dynamic left = Visit(node.Left);
             dynamic right = Visit(node.Right);
@@ -236,7 +272,7 @@ namespace RainyDay.Interpreter
 
         public override string ToString()
         {
-            var output = $"\n\t{"Type",CellSize}| {"Variable",CellSize}| Value";
+            var output = $"\n\t{new string('_', Math.Abs((CellSize*3) - 3))}\n\t{"Type",CellSize}| {"Variable",CellSize}| Value";
             foreach (var variable in GlobalVariables)
                 output += $"\n\t{variable.Value.Type,CellSize}| {variable.Key,CellSize}| {variable.Value.Value}";
             return output;

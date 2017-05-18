@@ -36,4 +36,24 @@
     {
         public DivideNode(AstNode left, AstNode right) : base(left, right) { }
     }
+
+	public class IncrementByNode : BinaryOperationNode
+	{
+		public IncrementByNode(AstNode left, AstNode right) : base(left, right) { }
+	}
+
+	public class DecrementByNode : BinaryOperationNode
+	{
+		public DecrementByNode(AstNode left, AstNode right) : base(left, right) { }
+	}
+
+	public class MultiplyByNode : BinaryOperationNode
+	{
+		public MultiplyByNode(AstNode left, AstNode right) : base(left, right) { }
+	}
+
+	public class DivideByNode : BinaryOperationNode
+	{
+		public DivideByNode(AstNode left, AstNode right) : base(left, right) { }
+	}
 }
