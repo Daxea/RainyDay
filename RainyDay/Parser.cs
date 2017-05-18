@@ -292,30 +292,30 @@ namespace RainyDay
 			{
 				var id = _currentToken.Value.ToString();
 				Eat(Tokens.Identifier);
-				if (_currentToken.Type == Tokens.Assign)
-					return Assignment(new VariableNode(id));
-				else if (_currentToken.Type == Tokens.Identifier)
-					return VariableDeclaration(new TypeNode(id));
-				else if (_currentToken.Type == Tokens.IncrementBy)
-				{
-					Eat(Tokens.IncrementBy);
-					return new IncrementByNode(new VariableNode(id), Expression());
-				}
-				else if (_currentToken.Type == Tokens.DecrementBy)
-				{
-					Eat(Tokens.DecrementBy);
-					return new DecrementByNode(new VariableNode(id), Expression());
-				}
-				else if (_currentToken.Type == Tokens.MultiplyBy)
-				{
-					Eat(Tokens.MultiplyBy);
-					return new MultiplyByNode(new VariableNode(id), Expression());
-				}
-				else if (_currentToken.Type == Tokens.DivideBy)
-				{
-					Eat(Tokens.DivideBy);
-					return new DivideByNode(new VariableNode(id), Expression());
-				}
+                if (_currentToken.Type == Tokens.Assign)
+                    return Assignment(new VariableNode(id));
+                else if (_currentToken.Type == Tokens.Identifier)
+                    return VariableDeclaration(new TypeNode(id));
+                else if (_currentToken.Type == Tokens.IncrementBy)
+                {
+                    Eat(Tokens.IncrementBy);
+                    return new IncrementByNode(new VariableNode(id), Expression());
+                }
+                else if (_currentToken.Type == Tokens.DecrementBy)
+                {
+                    Eat(Tokens.DecrementBy);
+                    return new DecrementByNode(new VariableNode(id), Expression());
+                }
+                else if (_currentToken.Type == Tokens.MultiplyBy)
+                {
+                    Eat(Tokens.MultiplyBy);
+                    return new MultiplyByNode(new VariableNode(id), Expression());
+                }
+                else if (_currentToken.Type == Tokens.DivideBy)
+                {
+                    Eat(Tokens.DivideBy);
+                    return new DivideByNode(new VariableNode(id), Expression());
+                }
 			}
 			else if (Tokens.IsPrimitiveType(_currentToken.Type))
 				return VariableDeclaration(TypeSpec());
@@ -353,11 +353,46 @@ namespace RainyDay
 			{
 				var token = _currentToken;
 				Eat(token.Type);
-				if (token.Type == Tokens.Add)
-					node = new AddNode(node, Term());
-				else if (token.Type == Tokens.Subtract)
-					node = new SubtractNode(node, Term());
-			}
+                if (token.Type == Tokens.Add)
+                    node = new AddNode(node, Term());
+                else if (token.Type == Tokens.Subtract)
+                    node = new SubtractNode(node, Term());
+            }
+
+            if (Tokens.IsComparison(_currentToken.Type))
+            {
+                var token = _currentToken;
+                if (token.Type == Tokens.Equal)
+                {
+                    Eat(Tokens.Equal);
+                    node = new EqualToNode(node, Term());
+                }
+                else if (token.Type == Tokens.NotEqual)
+                {
+                    Eat(Tokens.NotEqual);
+                    node = new NotEqualToNode(node, Term());
+                }
+                else if (token.Type == Tokens.GreaterThan)
+                {
+                    Eat(Tokens.GreaterThan);
+                    node = new GreaterThanNode(node, Term());
+                }
+                else if (token.Type == Tokens.GreaterThanOrEqualTo)
+                {
+                    Eat(Tokens.GreaterThanOrEqualTo);
+                    node = new GreaterThanOrEqualToNode(node, Term());
+                }
+                else if (token.Type == Tokens.LessThan)
+                {
+                    Eat(Tokens.LessThan);
+                    node = new LessThanNode(node, Term());
+                }
+                else if (token.Type == Tokens.LessThanOrEqualTo)
+                {
+                    Eat(Tokens.LessThanOrEqualTo);
+                    node = new LessThanOrEqualToNode(node, Term());
+                }
+            }
 
 			return node;
 		}

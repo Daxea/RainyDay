@@ -56,4 +56,34 @@
 	{
 		public DivideByNode(AstNode left, AstNode right) : base(left, right) { }
 	}
+
+    public class GreaterThanNode : BinaryOperationNode
+    {
+        public GreaterThanNode(AstNode left, AstNode right) : base(left, right) { }
+    }
+
+    public class GreaterThanOrEqualToNode : BinaryOperationNode
+    {
+        public GreaterThanOrEqualToNode(AstNode left, AstNode right) : base(left, right) { }
+    }
+
+    public class LessThanNode : BinaryOperationNode
+    {
+        public LessThanNode(AstNode left, AstNode right) : base(left, right) { }
+    }
+
+    public class LessThanOrEqualToNode : BinaryOperationNode
+    {
+        public LessThanOrEqualToNode(AstNode left, AstNode right) : base(left, right) { }
+    }
+
+    public class EqualToNode : BinaryOperationNode
+    {
+        public EqualToNode(AstNode left, AstNode right) : base(left, right) { }
+    }
+
+    public class NotEqualToNode : BinaryOperationNode
+    {
+        public NotEqualToNode(AstNode left, AstNode right) : base(left, right) { }
+    }
 }

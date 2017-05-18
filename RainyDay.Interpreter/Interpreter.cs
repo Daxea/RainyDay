@@ -119,6 +119,66 @@ namespace RainyDay.Interpreter
             return GlobalVariables[node.Name].Value;
         }
 
+        private void Visit(BranchNode node)
+        {
+            var condition = Visit(node.Condition);
+            if (condition is bool && (bool)condition)
+                Visit(node.IfTrue);
+            else if (node.IfFalse != null)
+                Visit(node.IfFalse);
+        }
+
+        #region Comparisons
+
+        private bool Visit(EqualToNode node) => Visit(node.Left).Equals(Visit(node.Right));
+
+        private bool Visit(NotEqualToNode node) => !Visit(node.Left).Equals(Visit(node.Right));
+
+        private bool Visit(GreaterThanNode node)
+        {
+            var left = Visit(node.Left);
+            var right = Visit(node.Right);
+            if (left is int && right is int)
+                return (int)left > (int)right;
+            else if (left is float && right is float)
+                return (float)left > (float)right;
+            return false;
+        }
+
+        private bool Visit(GreaterThanOrEqualToNode node)
+        {
+            var left = Visit(node.Left);
+            var right = Visit(node.Right);
+            if (left is int && right is int)
+                return (int)left >= (int)right;
+            else if (left is float && right is float)
+                return (float)left >= (float)right;
+            return false;
+        }
+
+        private bool Visit(LessThanNode node)
+        {
+            var left = Visit(node.Left);
+            var right = Visit(node.Right);
+            if (left is int && right is int)
+                return (int)left < (int)right;
+            else if (left is float && right is float)
+                return (float)left < (float)right;
+            return false;
+        }
+
+        private bool Visit(LessThanOrEqualToNode node)
+        {
+            var left = Visit(node.Left);
+            var right = Visit(node.Right);
+            if (left is int && right is int)
+                return (int)left <= (int)right;
+            else if (left is float && right is float)
+                return (float)left <= (float)right;
+            return false;
+        }
+
+        #endregion
         #region Increment/Decrement
 
         private object Visit(PreIncrementNode node)

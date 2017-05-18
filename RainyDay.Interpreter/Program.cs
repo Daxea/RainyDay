@@ -44,6 +44,11 @@ namespace RainyDay.Interpreter
                 }
                 else if ("quit".Contains(input.ToLowerInvariant()))
                     break;
+                else if ("restart".Equals(input.ToLowerInvariant()))
+                {
+                    interpreter = new Interpreter();
+                    continue;
+                }
                 else
                 {
                     var lexer = new Lexer(input);
