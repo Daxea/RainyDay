@@ -17,7 +17,7 @@ namespace RainyDay
 			_currentToken = _lexer.GetNextToken();
 		}
 
-		public AstNode ParseStatement() => Statement();
+		public AstNode ParseStatement() => new BlockNode(Statements());
 
 		public AstNode ParseScript() => Script();
 
@@ -343,7 +343,7 @@ namespace RainyDay
 
 		private AstNode Expression()
 		{
-			// EXPRESSION = TERM (ADD | SUBTRACT TERM)*
+			// EXPRESSION = TERM (ADD | SUBTRACT TERM)* (COMPARISON TERM)
 
 			var node = Term();
 
