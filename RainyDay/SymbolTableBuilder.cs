@@ -105,13 +105,13 @@ namespace RainyDay
 
 		private void Visit(UnaryOperationNode node) => Visit(node.Expression);
 
-		private void Visit(PreIncrementNode node) => Visit(node.Expression);
+		private void Visit(PreIncrementNode node) => Visit(node.Variable);
 
-		private void Visit(PreDecrementNode node) => Visit(node.Expression);
+		private void Visit(PreDecrementNode node) => Visit(node.Variable);
 
-		private void Visit(PostIncrementNode node) => Visit(node.Expression);
+		private void Visit(PostIncrementNode node) => Visit(node.Variable);
 
-		private void Visit(PostDecrementNode node) => Visit(node.Expression);
+		private void Visit(PostDecrementNode node) => Visit(node.Variable);
 
 		private void Visit(BinaryOperationNode node)
 		{

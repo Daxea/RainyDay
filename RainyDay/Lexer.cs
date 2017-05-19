@@ -101,6 +101,11 @@ namespace RainyDay
         private Token Identifier()
         {
             var result = string.Empty;
+            if (_currentChar == '@')
+            {
+                result += _currentChar;
+                AdvancePosition();
+            }
             while (_currentChar != char.MinValue && (char.IsLetterOrDigit(_currentChar) || _currentChar == '_'))
             {
                 result += _currentChar;
@@ -172,6 +177,18 @@ namespace RainyDay
 
                 if (char.IsDigit(_currentChar))
                     return Number();
+
+                if (_currentChar == '@')
+                {
+                    if (char.IsLetter(Peek()))
+                        return Identifier();
+                    if (Peek() == '\"')
+                    {
+                        // This should result in escape sequences being read in as normal characters, so \ will just be \, regardless of it's neighbor.
+                        AdvancePosition(2);
+                        return String();
+                    }
+                }
 
                 if (char.IsLetter(_currentChar) || _currentChar == '_')
                     return Identifier();
